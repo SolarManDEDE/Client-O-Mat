@@ -30,6 +30,8 @@ var TEXT_RESULTS_BUTTON_PARTIES= "All answers of the parties"
 
 // The following words may be used as ALT-Text or headers on the results-page 
 var TEXT_QUESTION = "Question"
+var TEXT_QUESTION_ANSWER_HEADER = "Question & Answer for Windows or Mac"
+var TEXT_USER_QUALIFICATION_HEADER = "Your answer & suitability for Windows or Mac"
 var TEXT_POSITION_PARTY = "Opinion of party"
 var TEXT_ANSWER_PARTY = "Answer of party"
 var TEXT_ANSWER_USER = "Your answer"
