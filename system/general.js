@@ -126,12 +126,16 @@ function fnEvaluation()
 		// Frage wurde nicht uebersprungen per SKIP (99) oder GEHE ZUR NAECHSTEN FRAGE (-)
 		if ( (arPersonalPositions[modulo] < 99) ) 
 		{
-			var faktor = fnGetEffectiveQuestionWeight(modulo);
+			var faktor = arVotingDouble[modulo] ? 2 : 1;
 
 			// Bei Uebereinstimmung der persönlichen Meinung (1,0,-1) mit Partei-Antwort (1,0-1), den Zaehler (Anzahl Übereinstimmungen) um eins erhoehen	
 			if (arPartyPositions[i] == arPersonalPositions[modulo])
 			{
 				positionsMatch+=faktor;
+				if (arPersonalPositions[modulo] == 1)
+				{
+					positionsMatch += fnGetEffectivePositiveBonus(modulo);
+				}
 				arResults[indexPartyInArray] = positionsMatch;
 
 			}
@@ -165,39 +169,51 @@ function fnEvaluation()
 
 }
 
-function fnGetQuestionWeight(questionIndex)
+function fnGetQuestionPositiveBonus(questionIndex)
 {
-	if (!Array.isArray(arQuestionWeights) || arQuestionWeights.length != intQuestions)
+	if (!Array.isArray(arQuestionPositiveBonuses) || arQuestionPositiveBonuses.length != intQuestions)
 	{
-		throw new Error("arQuestionWeights must contain one weight for each question.");
+		throw new Error("arQuestionPositiveBonuses must contain one bonus for each question.");
 	}
 
-	var weight = arQuestionWeights[questionIndex];
-	if (typeof weight != "number" || !isFinite(weight) || weight <= 0)
+	var bonus = arQuestionPositiveBonuses[questionIndex];
+	if (typeof bonus != "number" || !isFinite(bonus) || bonus < 0)
 	{
-		throw new Error("Question weight at index " + questionIndex + " must be a positive finite number.");
+		throw new Error("Positive-answer bonus at index " + questionIndex + " must be a non-negative finite number.");
 	}
 
-	return weight;
+	return bonus;
 }
 
-function fnGetEffectiveQuestionWeight(questionIndex)
+function fnGetEffectivePositiveBonus(questionIndex)
 {
-	return fnGetQuestionWeight(questionIndex) * (arVotingDouble[questionIndex] ? 2 : 1);
+	return fnGetQuestionPositiveBonus(questionIndex) * (arVotingDouble[questionIndex] ? 2 : 1);
+}
+
+function fnGetMaxPointsForPositionArray(positions, votingDouble)
+{
+	var maxPoints = 0;
+	for (var i = 0; i < positions.length; i++)
+	{
+		var position = Number(positions[i]);
+		if (position < 99)
+		{
+			var multiplier = votingDouble ? (votingDouble[i] ? 2 : 1) : (Math.abs(position) == 2 ? 2 : 1);
+			var questionMaxPoints = 1;
+			if (position == 1 || position == 2)
+			{
+				questionMaxPoints += fnGetQuestionPositiveBonus(i);
+			}
+			maxPoints += questionMaxPoints * multiplier;
+		}
+	}
+
+	return maxPoints;
 }
 
 function fnGetMaxPointsForAnswers()
 {
-	var maxPoints = 0;
-	for (var i = 0; i < intQuestions; i++)
-	{
-		if (arPersonalPositions[i] < 99)
-		{
-			maxPoints += fnGetEffectiveQuestionWeight(i);
-		}
-	}
-
-	return maxPoints || 1;
+	return fnGetMaxPointsForPositionArray(arPersonalPositions, arVotingDouble) || 1;
 }
 
 
