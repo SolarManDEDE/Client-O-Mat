@@ -332,19 +332,8 @@ function fnEvaluationShort(arResults)
 	$("#resultsHeading").append("<h1>"+TEXT_RESULTS_HEADING+"</h1>").fadeIn(500);
 
 	var numberOfQuestions=arQuestionsShort.length;
-	//Anzahl der Maximalpunkte ermitteln
-		var maxPoints = 0;
-	for (i=0;i<arQuestionsShort.length;i++)
-	{
-		if (arPersonalPositions[i]<99)
-		{
-			maxPoints++;
-			if(arVotingDouble[i])
-				{maxPoints++;}
-		}
-	}
-	if (maxPoints==0)
-		{maxPoints=1;}
+	// Anzahl der Maximalpunkte anhand der beantworteten, gewichteten Fragen ermitteln.
+	var maxPoints = fnGetMaxPointsForAnswers();
 
 	var tableContent = ""
 	tableContent += "<div class='row' id='resultsShortTable' role='table'>"
@@ -909,22 +898,8 @@ function fnReEvaluate()
 	//Ergebniss neu auswerten und Anzeige aktualisieren
 	arResults=fnEvaluation();
 
-	//Anzahl der Maximalpunkte ermitteln
-	var maxPoints = 0;
-
-//	for (i=0;i<arQuestionsShort.length;i++)
-	for (i=0; i<intQuestions; i++)
-
-	{
-		if (arPersonalPositions[i]<99)
-		{
-			maxPoints++;
-			if(arVotingDouble[i])
-				{maxPoints++;}
-		}
-	}
-	if(maxPoints==0)
-		{maxPoints=1};
+	// Anzahl der Maximalpunkte anhand der beantworteten, gewichteten Fragen ermitteln.
+	var maxPoints = fnGetMaxPointsForAnswers();
 //	for (i = 0; i <= (arPartyFiles.length-1); i++)
 	for (i = 0; i <= (intParties-1); i++)
 	{
@@ -943,4 +918,3 @@ function fnReEvaluate()
 	}
 
 }
-

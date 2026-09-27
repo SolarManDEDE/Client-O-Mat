@@ -78,6 +78,7 @@ function fnTestShowAll()
 	// EXISTENZ DER VARIABLEN
 	arVariablen = new Array("fileQuestions", 
 		"intQuestions",
+		"arQuestionWeights",
 		"fileAnswers",
 		"intParties",
 		"intPartyLogosImgWidth", 
@@ -127,6 +128,36 @@ function fnTestShowAll()
 				.css("color","red");
 				
 			// alert ("Achtung! Die Variable mit dem Namen - "+arVariablen[i]+" - ist in der DEFINITION.JS nicht definiert. \nBitte zuerst prüfen, dann den Test neu starten.")
+		}
+	}
+
+	if (typeof arQuestionWeights != "undefined")
+	{
+		var invalidQuestionWeights = !Array.isArray(arQuestionWeights) ||
+			arQuestionWeights.length != intQuestions;
+		for (var questionIndex = 0;
+			Array.isArray(arQuestionWeights) && questionIndex < arQuestionWeights.length;
+			questionIndex++)
+		{
+			if (typeof arQuestionWeights[questionIndex] != "number" ||
+				!isFinite(arQuestionWeights[questionIndex]) ||
+				arQuestionWeights[questionIndex] <= 0)
+			{
+				invalidQuestionWeights = true;
+			}
+		}
+
+		if (invalidQuestionWeights)
+		{
+			counterError++;
+			$("#testOtherDe").append("<b>("+counterError+").</b>")
+				.append(" Die Variable <u>arQuestionWeights</u> muss genau einen positiven Zahlenwert pro Frage enthalten.")
+				.append("<br />")
+				.css("color","red");
+			$("#testOtherEn").append("<b>("+counterError+").</b>")
+				.append(" The variable <u>arQuestionWeights</u> must contain exactly one positive number per question.")
+				.append("<br />")
+				.css("color","red");
 		}
 	}
 

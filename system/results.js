@@ -117,8 +117,13 @@ function fnResultsMowparties()
 	} // end for i-questionsShort
 
 	// PARTEI-AUSWERTUNG Nr. 1
-	var maxPointsPerParty = arMowparties.length * arQuestionsShort.length;
-	$("#resultsParties").append("<p>"+arMowparties.length+" Abstimmungen x "+intQuestions+" Fragen = maximal "+maxPointsPerParty+" Punkte pro Partei.</p>")
+	var maxPointsPerResponse = 0;
+	for (var questionIndex = 0; questionIndex < arQuestionsShort.length; questionIndex++)
+	{
+		maxPointsPerResponse += fnGetQuestionWeight(questionIndex);
+	}
+	var maxPointsPerParty = arMowparties.length * maxPointsPerResponse;
+	$("#resultsParties").append("<p>"+arMowparties.length+" Abstimmungen x "+maxPointsPerResponse+" Gewichtspunkte pro Antwort = maximal "+maxPointsPerParty+" Punkte pro Partei (bei einfacher Wertung).</p>")
 
 	content = "";
 	content += "<table class='table table-striped'>";
