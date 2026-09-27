@@ -60,7 +60,7 @@ function fnStart()
 	// Wenn Datenschutzerklärung vorhanden UND Auswertung gewünscht ...
 	$("#keepStats").hide()
 	$("#keepStatsQuestion").append(TEXT_ALLOW_STATISTIC);	// WACG: <label> sollte immer befüllt sein 	
-	if ((imprintPrivacyUrl.length > 0) && (statsRecord) )
+	if ((privacyPolicyUrl.length > 0) && (statsRecord) )
 	{		
 //		$("#keepStatsCheckbox").attr("checked",true); // Zeile auskommentieren/aktivieren und OptIn erzwingen - bitte mit Bedacht benutzen.
 		$("#keepStats").fadeIn(1000);
@@ -71,12 +71,6 @@ function fnStart()
 	}
 */
 
-	// Impressum auf Startseite ersetzen
-	// Text aus i18n einfügen
-	$("#imprint").html(TEXT_IMPRINT);
-	// Link aus definition.js einfügen
-	$("#imprint").attr("href", imprintLink)
-	
 	// Neustart / Wiederholung
 	var jetzt = new Date();
 	var sekunden = jetzt.getTime(); 
@@ -228,7 +222,7 @@ function fnShowQuestionNumber(questionNumber)
 		
 		
 		// Abfrage zur Statistik einblenden (v.0.6.)
-		if ((imprintPrivacyUrl.length > 0) && (statsRecord) )
+		if ((privacyPolicyUrl.length > 0) && (statsRecord) )
 		{		
 			$('#statisticsModal').modal('show')
 			

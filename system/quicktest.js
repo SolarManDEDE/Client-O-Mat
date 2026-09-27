@@ -70,7 +70,6 @@ function fnTestShowAll()
 	$("#testExplanation").empty();
 	$("#testQuestions").empty();
 	$("#testAnswers").empty();
-	$("#testImprint").empty();
 	
 	$("#testOtherDe").empty();
 	$("#testOtherEn").empty();
@@ -87,15 +86,7 @@ function fnTestShowAll()
 		"descriptionHeading1",
 		"descriptionHeading2",
 		"descriptionExplanation",
-		"imprintLink",
-		"imprintGeneral",
-		"imprintContact",
-		"imprintVATid",
-		"imprintDisputeResultion",
-		"imprintEditors",
-		"imprintProgramming",
-		"imprintPictures",
-		"imprintPrivacyUrl",
+		"privacyPolicyUrl",
 		"separator",
 		"design",
 		"language",
@@ -238,25 +229,6 @@ function fnTestShowAll()
 	}
 	
 	
-	// KONTAKT/IMPRESSUM (allgemein) - CONTACT / Imprint (general)
-
-	$("#testImprint").append("<b> Allgemeine Angaben gemäß § 5 TMG / General information</b> "+imprintGeneral+ "")
-		.append("<br />")
-		.append("<br /> <b>Kontaktdaten / Contact details:</b> "+imprintContact+ "")
-		.append("<br />")
-		.append("<br /> <b>(optional) Umsatzsteuer-ID / (optional) VAT-ID:</b> "+imprintVATid+ "")
-		.append("<br />")
-		.append("<br /> <b>Verbraucher­streit­beilegung / Online Dispute Resolution:</b> "+imprintDisputeResultion+ "")
-		.append("<br />")
-		.append("<br /> <b>Redaktion / Editors:</b> "+imprintEditors)
-		.append("<br />")
-		.append("<br /> <b>Technik / Programming:</b> "+imprintProgramming)
-		.append("<br />")
-		.append("<br /> <b>Bilder / Pictures:</b> "+imprintPictures)
-		.append("<br />")
-		.append("<br /> <b>Datenschutz / Privacy:</b> <a href='http://"+imprintPrivacyUrl+"' target='_blank'>"+imprintPrivacyUrl+"</a>");
-		
-
 	// BERECHNUNGEN - ab V 0.5 eigentlich nicht mehr nötig
 
 /*
@@ -341,7 +313,7 @@ function fnTestShowAll()
 	// Werte fuer "Wahlprognose" pruefen - Check statistics
 	if (statsRecord == 1)
 	{
-		if (imprintPrivacyUrl.length <= 0)
+		if (privacyPolicyUrl.length <= 0)
 		{
 			counterError++;
 			$("#testOtherDe").append("<b>("+counterError+").</b>")
