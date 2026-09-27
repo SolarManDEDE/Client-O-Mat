@@ -199,11 +199,7 @@ function fnGetMaxPointsForPositionArray(positions, votingDouble)
 		if (position < 99)
 		{
 			var multiplier = votingDouble ? (votingDouble[i] ? 2 : 1) : (Math.abs(position) == 2 ? 2 : 1);
-			var questionMaxPoints = 1;
-			if (position == 1 || position == 2)
-			{
-				questionMaxPoints += fnGetQuestionPositiveBonus(i);
-			}
+			var questionMaxPoints = 1 + fnGetQuestionPositiveBonus(i);
 			maxPoints += questionMaxPoints * multiplier;
 		}
 	}
