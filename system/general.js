@@ -126,9 +126,7 @@ function fnEvaluation()
 		// Frage wurde nicht uebersprungen per SKIP (99) oder GEHE ZUR NAECHSTEN FRAGE (-)
 		if ( (arPersonalPositions[modulo] < 99) ) 
 		{
-			var faktor=1; // Faktor ist 1 normal und 2, wenn Frage doppelt gewertet werden soll
-			if(arVotingDouble[modulo])
-				{faktor=2;}
+			var faktor = fnGetEffectiveQuestionWeight(modulo);
 
 			// Bei Uebereinstimmung der persönlichen Meinung (1,0,-1) mit Partei-Antwort (1,0-1), den Zaehler (Anzahl Übereinstimmungen) um eins erhoehen	
 			if (arPartyPositions[i] == arPersonalPositions[modulo])
@@ -165,6 +163,41 @@ function fnEvaluation()
 //	console.log(arResults)
 	return arResults;
 
+}
+
+function fnGetQuestionWeight(questionIndex)
+{
+	if (!Array.isArray(arQuestionWeights) || arQuestionWeights.length != intQuestions)
+	{
+		throw new Error("arQuestionWeights must contain one weight for each question.");
+	}
+
+	var weight = arQuestionWeights[questionIndex];
+	if (typeof weight != "number" || !isFinite(weight) || weight <= 0)
+	{
+		throw new Error("Question weight at index " + questionIndex + " must be a positive finite number.");
+	}
+
+	return weight;
+}
+
+function fnGetEffectiveQuestionWeight(questionIndex)
+{
+	return fnGetQuestionWeight(questionIndex) * (arVotingDouble[questionIndex] ? 2 : 1);
+}
+
+function fnGetMaxPointsForAnswers()
+{
+	var maxPoints = 0;
+	for (var i = 0; i < intQuestions; i++)
+	{
+		if (arPersonalPositions[i] < 99)
+		{
+			maxPoints += fnGetEffectiveQuestionWeight(i);
+		}
+	}
+
+	return maxPoints || 1;
 }
 
 
