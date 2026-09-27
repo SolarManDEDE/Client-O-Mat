@@ -117,13 +117,13 @@ function fnResultsMowparties()
 	} // end for i-questionsShort
 
 	// PARTEI-AUSWERTUNG Nr. 1
-	var maxPointsPerResponse = 0;
-	for (var questionIndex = 0; questionIndex < arQuestionsShort.length; questionIndex++)
+	var maxPointsTotal = 0;
+	for (var responseIndex = 0; responseIndex < arMowpersonal.length; responseIndex++)
 	{
-		maxPointsPerResponse += fnGetQuestionWeight(questionIndex);
+		maxPointsTotal += fnGetMaxPointsForPositionArray(arMowpersonal[responseIndex]);
 	}
-	var maxPointsPerParty = arMowparties.length * maxPointsPerResponse;
-	$("#resultsParties").append("<p>"+arMowparties.length+" Abstimmungen x "+maxPointsPerResponse+" Gewichtspunkte pro Antwort = maximal "+maxPointsPerParty+" Punkte pro Partei (bei einfacher Wertung).</p>")
+	var maxPointsPerParty = maxPointsTotal || 1;
+	$("#resultsParties").append("<p>Maximal "+maxPointsPerParty+" Punkte pro Partei, berechnet anhand der beantworteten Fragen und positiver Show-Stopper-Boni.</p>")
 
 	content = "";
 	content += "<table class='table table-striped'>";
@@ -156,22 +156,22 @@ function fnResultsMowparties()
 
 
 	// PARTEI-AUSWERTUNG Nr. 2
-	var maxPointsTotal = maxPointsPerParty * arPartyLogosImg.length;
-	$("#resultsParties").append("<p>"+maxPointsPerParty+" Punkte/Partei x "+intParties+" Parteien = maximal "+maxPointsTotal+" Punkte insgesamt.</p>")
+	var maxPointsAllParties = maxPointsPerParty * arPartyLogosImg.length;
+	$("#resultsParties").append("<p>"+maxPointsPerParty+" Punkte/Partei x "+intParties+" Parteien = maximal "+maxPointsAllParties+" Punkte insgesamt.</p>")
 
 	content = "";
 	content += "<table class='table table-striped'>";
 //	for (i = 0; i <= arPartyNamesShort.length-1; i++)
 	for (i = 0; i <= intParties-1; i++)	
 	{
-		var percent = fnPercentage(arResultsMowpartiesSum[i],maxPointsTotal);
+		var percent = fnPercentage(arResultsMowpartiesSum[i],maxPointsAllParties);
 		content += "<tr>";
 			content += "<td>";
 				content += " <img src='"+arPartyLogosImg[i]+"' height='"+(intPartyLogosImgHeight)+"' width='"+(intPartyLogosImgWidth)+"' border='1'> ";
 				content += " "+arPartyNamesShort[i]+"";
 			content += "</td>";
 			content += "<td>";
-				content += " "+arResultsMowpartiesSum[i]+"/"+maxPointsTotal+" ";
+				content += " "+arResultsMowpartiesSum[i]+"/"+maxPointsAllParties+" ";
 				content += " ("+percent+"%) ";
 			content += "</td>";
 			content += "<td width='40%'>";

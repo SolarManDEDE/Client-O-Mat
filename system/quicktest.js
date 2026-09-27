@@ -77,7 +77,7 @@ function fnTestShowAll()
 	// EXISTENZ DER VARIABLEN
 	arVariablen = new Array("fileQuestions", 
 		"intQuestions",
-		"arQuestionWeights",
+		"arQuestionPositiveBonuses",
 		"fileAnswers",
 		"intParties",
 		"intPartyLogosImgWidth", 
@@ -122,31 +122,31 @@ function fnTestShowAll()
 		}
 	}
 
-	if (typeof arQuestionWeights != "undefined")
+	if (typeof arQuestionPositiveBonuses != "undefined")
 	{
-		var invalidQuestionWeights = !Array.isArray(arQuestionWeights) ||
-			arQuestionWeights.length != intQuestions;
+		var invalidQuestionPositiveBonuses = !Array.isArray(arQuestionPositiveBonuses) ||
+			arQuestionPositiveBonuses.length != intQuestions;
 		for (var questionIndex = 0;
-			Array.isArray(arQuestionWeights) && questionIndex < arQuestionWeights.length;
+			Array.isArray(arQuestionPositiveBonuses) && questionIndex < arQuestionPositiveBonuses.length;
 			questionIndex++)
 		{
-			if (typeof arQuestionWeights[questionIndex] != "number" ||
-				!isFinite(arQuestionWeights[questionIndex]) ||
-				arQuestionWeights[questionIndex] <= 0)
+			if (typeof arQuestionPositiveBonuses[questionIndex] != "number" ||
+				!isFinite(arQuestionPositiveBonuses[questionIndex]) ||
+				arQuestionPositiveBonuses[questionIndex] < 0)
 			{
-				invalidQuestionWeights = true;
+				invalidQuestionPositiveBonuses = true;
 			}
 		}
 
-		if (invalidQuestionWeights)
+		if (invalidQuestionPositiveBonuses)
 		{
 			counterError++;
 			$("#testOtherDe").append("<b>("+counterError+").</b>")
-				.append(" Die Variable <u>arQuestionWeights</u> muss genau einen positiven Zahlenwert pro Frage enthalten.")
+				.append(" Die Variable <u>arQuestionPositiveBonuses</u> muss genau einen positiven oder null Zusatzpunktwert pro Frage enthalten.")
 				.append("<br />")
 				.css("color","red");
 			$("#testOtherEn").append("<b>("+counterError+").</b>")
-				.append(" The variable <u>arQuestionWeights</u> must contain exactly one positive number per question.")
+				.append(" The variable <u>arQuestionPositiveBonuses</u> must contain exactly one non-negative bonus value per question.")
 				.append("<br />")
 				.css("color","red");
 		}

@@ -71,10 +71,11 @@ var fileQuestions = "Fragen.csv";
 
 var intQuestions = 6;
 
-// Gewichtungsfaktor pro Frage (gleiche Reihenfolge wie in der Fragen-CSV).
-// Beispiel für eine dominante erste Frage: [100, 1, 1, 1, 1, 1]
-// Die optionale x2-Wertung durch Nutzer wird zusätzlich auf diesen Faktor angewendet.
-var arQuestionWeights = [1, 100, 100, 1, 1, 1];
+// Zusatzpunkte nur für eine positive Übereinstimmung (gleiche Reihenfolge wie in der Fragen-CSV).
+// Beispiel: [0, 100, 100, 0, 0, 0] gibt bei Frage 2 und 3 nur für eine positive
+// Antwort zusätzliche Punkte. Negative Antworten behalten ihre normale Wertung.
+// Die optionale x2-Wertung durch Nutzer wird zusätzlich auf den Bonus angewendet.
+var arQuestionPositiveBonuses = [0, 100, 100, 0, 0, 0];
 
 
 // 	--------------------------------------------------------------------
