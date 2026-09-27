@@ -71,13 +71,6 @@ var fileQuestions = "Fragen.csv";
 
 var intQuestions = 6;
 
-// Zusatzpunkte nur für eine positive Übereinstimmung (gleiche Reihenfolge wie in der Fragen-CSV).
-// Beispiel: [0, 100, 100, 0, 0, 0] gibt bei Frage 2 und 3 nur für eine positive
-// Antwort zusätzliche Punkte. Negative Antworten behalten ihre normale Wertung.
-// Die optionale x2-Wertung durch Nutzer wird zusätzlich auf den Bonus angewendet.
-var arQuestionPositiveBonuses = [0, 100, 100, 0, 0, 0];
-
-
 // 	--------------------------------------------------------------------
 
 /* 
@@ -90,9 +83,11 @@ var arQuestionPositiveBonuses = [0, 100, 100, 0, 0, 0];
 		0;Webseite (z.B. https://www.appelpartei.ap)
 		0;Logo / Bilddatei (z.B. appel.png)
 		  Danach kommen die Antworten der Parteien, z.B.
-		-1;Wir sind dagegen weil ...
-		0;Das ist uns egal
-		1;Wir sind dafür weil ...
+		-5;Wir sind dagegen weil ... (5 Punkte bei Übereinstimmung mit der ablehnenden Position)
+		0;Das ist uns egal (neutrale Position)
+		10;Wir sind dafür weil ... (10 Punkte bei Übereinstimmung mit der zustimmenden Position)
+		Bei gleicher Richtung gibt es den Betrag des Punktewerts, bei entgegengesetzter Richtung 0 Punkte.
+		Neutrale Übereinstimmungen werden wie bisher mit 0,5 Punkten (beide neutral: 1 Punkt) bewertet.
 		0;Zum Schluss kommt noch ein Leerzeile ohne Funktion, nur für die Übersicht. Danach geht es mit der nächsten Partei weiter.
 
 	********************************************************************

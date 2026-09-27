@@ -123,7 +123,7 @@ function fnResultsMowparties()
 		maxPointsTotal += fnGetMaxPointsForPositionArray(arMowpersonal[responseIndex]);
 	}
 	var maxPointsPerParty = maxPointsTotal || 1;
-	$("#resultsParties").append("<p>Maximal "+maxPointsPerParty+" Punkte pro Partei, berechnet anhand der beantworteten Fragen und positiver Show-Stopper-Boni.</p>")
+	$("#resultsParties").append("<p>Maximal "+maxPointsPerParty+" Punkte pro Partei, berechnet anhand der Punktewerte in Parteien.csv und der optionalen doppelten Wertung.</p>")
 
 	content = "";
 	content += "<table class='table table-striped'>";

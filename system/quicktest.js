@@ -77,7 +77,6 @@ function fnTestShowAll()
 	// EXISTENZ DER VARIABLEN
 	arVariablen = new Array("fileQuestions", 
 		"intQuestions",
-		"arQuestionPositiveBonuses",
 		"fileAnswers",
 		"intParties",
 		"intPartyLogosImgWidth", 
@@ -122,31 +121,18 @@ function fnTestShowAll()
 		}
 	}
 
-	if (typeof arQuestionPositiveBonuses != "undefined")
+	for (var answerIndex = 0; answerIndex < arPartyPositions.length; answerIndex++)
 	{
-		var invalidQuestionPositiveBonuses = !Array.isArray(arQuestionPositiveBonuses) ||
-			arQuestionPositiveBonuses.length != intQuestions;
-		for (var questionIndex = 0;
-			Array.isArray(arQuestionPositiveBonuses) && questionIndex < arQuestionPositiveBonuses.length;
-			questionIndex++)
-		{
-			if (typeof arQuestionPositiveBonuses[questionIndex] != "number" ||
-				!isFinite(arQuestionPositiveBonuses[questionIndex]) ||
-				arQuestionPositiveBonuses[questionIndex] < 0)
-			{
-				invalidQuestionPositiveBonuses = true;
-			}
-		}
-
-		if (invalidQuestionPositiveBonuses)
+		if (typeof arPartyPositions[answerIndex] != "number" ||
+			!isFinite(arPartyPositions[answerIndex]))
 		{
 			counterError++;
 			$("#testOtherDe").append("<b>("+counterError+").</b>")
-				.append(" Die Variable <u>arQuestionPositiveBonuses</u> muss genau einen positiven oder null Zusatzpunktwert pro Frage enthalten.")
+				.append(" Ungültiger Punktewert in der ersten Spalte der Parteiantworten (Eintrag "+(answerIndex+1)+"). Erlaubt sind endliche Zahlen, zum Beispiel -100, 0 oder 100.")
 				.append("<br />")
 				.css("color","red");
 			$("#testOtherEn").append("<b>("+counterError+").</b>")
-				.append(" The variable <u>arQuestionPositiveBonuses</u> must contain exactly one non-negative bonus value per question.")
+				.append(" Invalid point value in the first column of party answers (entry "+(answerIndex+1)+"). Finite numbers are allowed, for example -100, 0, or 100.")
 				.append("<br />")
 				.css("color","red");
 		}

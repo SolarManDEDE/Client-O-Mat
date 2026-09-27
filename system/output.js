@@ -385,8 +385,9 @@ function fnEvaluationShort(arResults)
 				tableContent += "<div class='col col-12 col-md-4' role='cell'>"
 				// tableContent += "<td style='width:40%;'>"
 					tableContent += "<div class='progress'>"
-					tableContent += "	<div class='progress-bar' role='progressbar' id='partyBar"+partyNum+"' style='width:"+percent+"%;' aria-valuenow='"+percent+"' aria-valuemin='0' aria-valuemax='100'>JUST_A_PLACEHOLDER_TEXT - SEE FUNCTION fnReEvaluate()</div> "
+					tableContent += "	<div class='progress-bar' role='progressbar' id='partyBar"+partyNum+"' style='width:"+percent+"%;' aria-valuenow='"+percent+"' aria-valuemin='0' aria-valuemax='100'></div> "
 					tableContent += "</div>"
+					tableContent += "<span class='small' id='partyScore"+partyNum+"'></span>"
 				tableContent += "</div>"
 				// tableContent += "</td>"
 
@@ -904,7 +905,8 @@ function fnReEvaluate()
 				
 		// neu ab v.0.3 - Bootstrap-Progressbar
 		$("#partyBar"+i).width(percent+"%")
-		$("#partyBar"+i).text(percent+"% (" + arResults[i]+" / "+maxPoints+ ")");
+		$("#partyBar"+i).attr("aria-valuenow", percent).text(percent+"%");
+		$("#partyScore"+i).text(arResults[i]+" / "+maxPoints+" Punkte");
 		$("#partyBar"+i).removeClass("bg-success bg-warning bg-danger").addClass(barImage);
 
 		$("#partyPoints"+i).html(arResults[i]+"/"+maxPoints);
