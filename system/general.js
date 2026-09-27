@@ -9,7 +9,7 @@ var version = "stable-v0.6-BMBF-PTF-20210727"
 var arQuestionsShort = new Array();	// Kurzform der Fragen: Atomkraft, Flughafenausbau, ...
 var arQuestionsLong = new Array();		// Langform der Frage: Soll der Flughafen ausgebaut werden?
 
-var arPartyPositions = new Array();	// Position der Partei als Zahl aus den CSV-Dateien (1/0/-1)
+var arPartyPositions = new Array();	// Vorzeichen bestimmt die Position, der Betrag den Punktewert
 var arPartyOpinions = new Array();		// Begründung der Parteien aus den CSV-Dateien
 var arPersonalPositions = new Array();	// eigene Position als Zahl (1/0/-1)
 var arVotingDouble = new Array();	// eigene Position als Zahl (2/1/0/-1/-2)
@@ -126,26 +126,12 @@ function fnEvaluation()
 		// Frage wurde nicht uebersprungen per SKIP (99) oder GEHE ZUR NAECHSTEN FRAGE (-)
 		if ( (arPersonalPositions[modulo] < 99) ) 
 		{
-			var faktor = arVotingDouble[modulo] ? 2 : 1;
-
-			// Bei Uebereinstimmung der persönlichen Meinung (1,0,-1) mit Partei-Antwort (1,0-1), den Zaehler (Anzahl Übereinstimmungen) um eins erhoehen	
-			if (arPartyPositions[i] == arPersonalPositions[modulo])
-			{
-				positionsMatch+=faktor;
-				if (arPersonalPositions[modulo] == 1)
-				{
-					positionsMatch += fnGetEffectivePositiveBonus(modulo);
-				}
-				arResults[indexPartyInArray] = positionsMatch;
-
-			}
-			// Eigene Meinung ist neutral ODER Partei ist neutral -> 0,5 Punkte vergeben
-			else if ( (arPersonalPositions[modulo] == 0) || (arPartyPositions[i] == 0) )
-			{
-				positionsMatch+=0.5*faktor;
-				arResults[indexPartyInArray] = positionsMatch;
-
-			} // end: if arPartyPosition-i = arPersonalPosition
+			positionsMatch += fnGetPointsForAnswer(
+				arPersonalPositions[modulo],
+				arPartyPositions[i],
+				arVotingDouble[modulo] ? 2 : 1
+			);
+			arResults[indexPartyInArray] = positionsMatch;
 		} // end: Frage nicht uebersprungen
 	} // end: for numberOfQuestions
 
@@ -169,25 +155,35 @@ function fnEvaluation()
 
 }
 
-function fnGetQuestionPositiveBonus(questionIndex)
+function fnGetPositionDirection(position)
 {
-	if (!Array.isArray(arQuestionPositiveBonuses) || arQuestionPositiveBonuses.length != intQuestions)
-	{
-		throw new Error("arQuestionPositiveBonuses must contain one bonus for each question.");
-	}
-
-	var bonus = arQuestionPositiveBonuses[questionIndex];
-	if (typeof bonus != "number" || !isFinite(bonus) || bonus < 0)
-	{
-		throw new Error("Positive-answer bonus at index " + questionIndex + " must be a non-negative finite number.");
-	}
-
-	return bonus;
+	return position > 0 ? 1 : (position < 0 ? -1 : 0);
 }
 
-function fnGetEffectivePositiveBonus(questionIndex)
+function fnGetPointsForAnswer(personalPosition, partyAnswer, multiplier)
 {
-	return fnGetQuestionPositiveBonus(questionIndex) * (arVotingDouble[questionIndex] ? 2 : 1);
+	var numericPartyAnswer = Number(partyAnswer);
+	if (!isFinite(numericPartyAnswer))
+	{
+		throw new Error("Party answers must be finite numeric values.");
+	}
+
+	var personalDirection = fnGetPositionDirection(Number(personalPosition));
+	var partyDirection = fnGetPositionDirection(numericPartyAnswer);
+	if (personalDirection == 0 && partyDirection == 0)
+	{
+		return multiplier;
+	}
+	if (personalDirection == 0 || partyDirection == 0)
+	{
+		return 0.5 * multiplier;
+	}
+	if (personalDirection == partyDirection)
+	{
+		return Math.abs(numericPartyAnswer) * multiplier;
+	}
+
+	return 0;
 }
 
 function fnGetMaxPointsForPositionArray(positions, votingDouble)
@@ -199,8 +195,18 @@ function fnGetMaxPointsForPositionArray(positions, votingDouble)
 		if (position < 99)
 		{
 			var multiplier = votingDouble ? (votingDouble[i] ? 2 : 1) : (Math.abs(position) == 2 ? 2 : 1);
-			var questionMaxPoints = 1 + fnGetQuestionPositiveBonus(i);
-			maxPoints += questionMaxPoints * multiplier;
+			var maxQuestionPoints = 1;
+			for (var partyIndex = 0; partyIndex < intParties; partyIndex++)
+			{
+				var partyAnswerIndex = partyIndex * intQuestions + i;
+				var partyAnswer = Number(arPartyPositions[partyAnswerIndex]);
+				if (!isFinite(partyAnswer))
+				{
+					throw new Error("Party answers must be finite numeric values.");
+				}
+				maxQuestionPoints = Math.max(maxQuestionPoints, Math.abs(partyAnswer));
+			}
+			maxPoints += maxQuestionPoints * multiplier;
 		}
 	}
 
@@ -316,7 +322,8 @@ function fnTransformCsvToArray(csvData,modus)
 			else if ( (modulo > 4) && (modulo <= (intQuestions+4) ) )
 			{
 				// Positionen und Erklärungen
-				arPartyPositions.push(valueOne); // -1,0,1
+				var partyAnswerText = String(valueOne).trim();
+				arPartyPositions.push(partyAnswerText == "" ? NaN : Number(partyAnswerText));
 				arPartyOpinions.push(valueTwo); // Erklärung zur Zahl
 			}
 			else 
@@ -332,6 +339,7 @@ function fnTransformCsvToArray(csvData,modus)
 // ersetzt die Position (-1, 0, 1) mit dem passenden Button
 function fnTransformPositionToButton(position)
 {
+	position = fnGetPositionDirection(Number(position));
 	var arButtons = new Array("btn-danger","btn-warning","btn-success")
 	var positionButton = "btn-default";
 	for (z = -1; z <= 1; z++)
@@ -348,6 +356,7 @@ function fnTransformPositionToButton(position)
 // ersetzt die Position (-1, 0, 1) mit dem passenden Icon
 function fnTransformPositionToIcon(position)
 {
+	position = fnGetPositionDirection(Number(position));
 	var arIcons = new Array("&#x2716;","&#x25EF;","&#x2714;")
 	var positionIcon = "&#x21B7;";
 	for (z = -1; z <= 1; z++)
@@ -362,7 +371,7 @@ function fnTransformPositionToIcon(position)
 
 // Gibt die entsprechenden css-Klassen für Partei-Position (-1, 0, 1) und default zurück.
 function fnGetJumpToQuestionColorForPosition(position) {
-    console.log("position", position);
+    position = fnGetPositionDirection(Number(position));
     switch (position) {
         case -1:
             return "bg-danger td-jump-to-question-decline";
@@ -379,6 +388,7 @@ function fnGetJumpToQuestionColorForPosition(position) {
 // ersetzt die Partei-Position (-1, 0, 1) mit dem passenden Text
 function fnTransformPositionToText(position)
 {
+	position = fnGetPositionDirection(Number(position));
 	var arText = new Array("[-]","[o]","[+]")
 	var positionText = "[/]";
 	for (z = -1; z <= 1; z++)
