@@ -123,16 +123,17 @@ function fnEvaluation()
 			positionsMatch = 0;
 		}
 
-		// Frage wurde nicht uebersprungen per SKIP (99) oder GEHE ZUR NAECHSTEN FRAGE (-)
-		if ( (arPersonalPositions[modulo] < 99) ) 
+		if (!isFinite(arPersonalPositions[modulo]) || arPersonalPositions[modulo] >= 99)
 		{
-			positionsMatch += fnGetPointsForAnswer(
-				arPersonalPositions[modulo],
-				arPartyPositions[i],
-				arVotingDouble[modulo] ? 2 : 1
-			);
-			arResults[indexPartyInArray] = positionsMatch;
-		} // end: Frage nicht uebersprungen
+			throw new Error("All questions must be answered before scoring.");
+		}
+
+		positionsMatch += fnGetPointsForAnswer(
+			arPersonalPositions[modulo],
+			arPartyPositions[i],
+			arVotingDouble[modulo] ? 2 : 1
+		);
+		arResults[indexPartyInArray] = positionsMatch;
 	} // end: for numberOfQuestions
 
 
@@ -371,8 +372,12 @@ function fnTransformPositionToIcon(position)
 
 // Gibt die entsprechenden css-Klassen für Partei-Position (-1, 0, 1) und default zurück.
 function fnGetJumpToQuestionColorForPosition(position) {
-    position = fnGetPositionDirection(Number(position));
-    switch (position) {
+    position = Number(position);
+    if (!isFinite(position) || position >= 99) {
+        return "td-jump-to-question-unanswered";
+    }
+
+    switch (fnGetPositionDirection(position)) {
         case -1:
             return "bg-danger td-jump-to-question-decline";
         case 0:
@@ -380,7 +385,7 @@ function fnGetJumpToQuestionColorForPosition(position) {
         case 1:
             return "bg-success td-jump-to-question-approve";
         default:
-            return "td-jump-to-question-skip";
+            return "td-jump-to-question-unanswered";
     }
 }
 
@@ -427,11 +432,18 @@ function fnBarImage(percent)
 // 02/2015 BenKob (doppelte Wertung)
 function fnToggleSelfPosition(i)
 {
-	arPersonalPositions[i]--;
-	if (arPersonalPositions[i]==-2) 
-		{arPersonalPositions[i]=99}
-	if (arPersonalPositions[i]==98) 
-		{arPersonalPositions[i]=1}
+	if (arPersonalPositions[i] == 1)
+	{
+		arPersonalPositions[i] = 0;
+	}
+	else if (arPersonalPositions[i] == 0)
+	{
+		arPersonalPositions[i] = -1;
+	}
+	else
+	{
+		arPersonalPositions[i] = 1;
+	}
 //	var positionImage = fnTransformPositionToImage(arPersonalPositions[i]);
 	var positionButton = fnTransformPositionToButton(arPersonalPositions[i]);
 	var positionIcon = fnTransformPositionToIcon(arPersonalPositions[i]);

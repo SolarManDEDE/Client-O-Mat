@@ -5,7 +5,6 @@ var TEXT_START = "Let's start"
 var TEXT_VOTING_PRO = "Agree"
 var TEXT_VOTING_NEUTRAL = "No opinion"
 var TEXT_VOTING_CONTRA = "Disagree"
-var TEXT_VOTING_SKIP = "Skip (don't count)"
 var TEXT_VOTING_DOUBLE = "Very important to me"
 
 // Statistic

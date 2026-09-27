@@ -26,7 +26,6 @@ function fnStart()
 	$("#votingPro").html(TEXT_VOTING_PRO)
 	$("#votingNeutral").html(TEXT_VOTING_NEUTRAL)
 	$("#votingContra").html(TEXT_VOTING_CONTRA)
-	$("#votingSkip").html(TEXT_VOTING_SKIP)
 	$("#votingDouble").html(TEXT_VOTING_DOUBLE)
 	
 	// 4. Navigation
@@ -134,7 +133,19 @@ function fnShowQuestionNumber(questionNumber)
 	$("#votingPro").unbind("click");
 	$("#votingNeutral").unbind("click");
 	$("#votingContra").unbind("click");
-	$("#votingSkip").unbind("click");
+
+	for (var unansweredQuestion = 0; unansweredQuestion < arQuestionsLong.length; unansweredQuestion++)
+	{
+		if (!isFinite(arPersonalPositions[unansweredQuestion]) ||
+			arPersonalPositions[unansweredQuestion] >= 99)
+		{
+			if (questionNumber > unansweredQuestion)
+			{
+				questionNumber = unansweredQuestion;
+			}
+			break;
+		}
+	}
 
 	// solange Fragen gestellt werden -> Anzeigen (sonst Auswertung)
 	if (questionNumber < arQuestionsLong.length) 
@@ -181,11 +192,6 @@ function fnShowQuestionNumber(questionNumber)
 		   	fnShowQuestionNumber(questionNumber);
 		   });
 	
-		   $("#votingSkip").click(function () { 
-		   	arPersonalPositions[questionNumber] = 99;
-		   	fnShowQuestionNumber(questionNumber);
-		   });
-
 			// Checkbox für doppelte Bewertung 
 		  	$("#votingDouble").attr('checked', arVotingDouble[questionNumber]);
 			// und Bild/Button zuruecksetzen
@@ -268,13 +274,6 @@ function fnJumpToQuestionNumber(questionNumber)
 	// alten Inhalt ausblenden und loeschen
 	$("#navigationJumpToQuestion").fadeOut(500).empty().hide();
 
-	// Durchlauf des Arrays bis zur ausgewählten Frage und Setzen der 99, falls NaN
-	for (i =0; i<questionNumber; i++) {
-		if (isNaN(arPersonalPositions[i])) {
-			arPersonalPositions[i] = 99;
-		}
-	}
-
 	var maxQuestionsPerLine = 12;  // z.B. 16
 
 	// Wenn mehr als XY Fragen vorhanden, dann erstelle eine zweite/dritte/... Zeile
@@ -303,7 +302,14 @@ function fnJumpToQuestionNumber(questionNumber)
 		// neue Zeile
 		if (modulo == 1) { tableContent += "<tr>"; }
 		tableContent += "<td align='center' id='jumpToQuestionNr"+i+"' title='"+arQuestionsShort[(i-1)]+" - "+arQuestionsLong[(i-1)]+"' class='"+jumpToQuestionClass+"'>";
-		tableContent += "<a href='javascript:fnShowQuestionNumber("+(i-2)+")' style='display:block;'>"+i+" </a>"; 
+		if (i - 1 <= questionNumber || arPersonalPositions[i - 1] < 99)
+		{
+			tableContent += "<a href='javascript:fnShowQuestionNumber("+(i-2)+")' style='display:block;'>"+i+" </a>";
+		}
+		else
+		{
+			tableContent += i;
+		}
 		tableContent += "</td>";
 		if (modulo == 0) { tableContent += "</tr>"; }
 	}
