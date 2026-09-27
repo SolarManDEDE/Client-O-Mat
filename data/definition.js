@@ -62,7 +62,7 @@
 	e.g. "Airport","The airport shall be expanded."
 */
 
-var fileQuestions = "Obsthausen_Fragen.csv";
+var fileQuestions = "Fragen.csv";
 
 
 // 	--------------------------------------------------------------------
@@ -74,7 +74,7 @@ var intQuestions = 6;
 // Gewichtungsfaktor pro Frage (gleiche Reihenfolge wie in der Fragen-CSV).
 // Beispiel für eine dominante erste Frage: [100, 1, 1, 1, 1, 1]
 // Die optionale x2-Wertung durch Nutzer wird zusätzlich auf diesen Faktor angewendet.
-var arQuestionWeights = [1, 1, 1, 1, 1, 1];
+var arQuestionWeights = [1, 100, 100, 1, 1, 1];
 
 
 // 	--------------------------------------------------------------------
@@ -99,12 +99,12 @@ var arQuestionWeights = [1, 1, 1, 1, 1, 1];
  	1.3. PARTIES, PARTY-INFORMATION and ANSWERS
 */
 
-var fileAnswers = "Obsthausen_Parteien.csv";
+var fileAnswers = "Parteien.csv";
 
 
 // 	1.4 ANZAHL der PARTEIEN / 1.6 NUMBER of PARTIES
 
-var intParties = 4;
+var intParties = 2;
 
 
 /*
@@ -147,17 +147,17 @@ var descriptionShowOnStart = 1;
 
 // 	1.6.2. Hauptueberschrift / 1.6.1. Main headline
 
-var descriptionHeading1 = "Fruchtkorbwahlen";
+var descriptionHeading1 = "Windows oder Mac";
 
 
 // 	1.6.3. Zweite Ueberschrift / 1.6.2. Second Headline
 
-var descriptionHeading2 = "Die Wahl zur neuen Regierung in Obsthausen";
+var descriptionHeading2 = "Welches ist der richtige Client für mich";
 
 
 // 	1.6.4. Kurzer Text um was es bei der Wahl geht / 1.6.3. Short (descriptive) text on what's the election about
 
-var descriptionExplanation = "Am 30. Februar finden in Obsthausen Wahlen statt. Sie k&ouml;nnen sich hier alle Parteipositionen anschauen und miteinander vergleichen. Dies ist <strong>keine Wahlempfehlung</strong>, sondern ein Informationsangebot zu Wahlen! <br /> Zur Auswahl stehen vier Parteien mit unterschiedlichen Meinungen zu kontroversen Themen der Obst- und Frucht-Landschaft."; 
+var descriptionExplanation = "Welches ist der richtige Client für mich? Klicke Dich durch die <strong>Fragen</strong>, und erfahre das Ergebnis! <br /> Blindtext, Blindtext, Blindtext."; 
 
 
 // 	--------------------------------------------------------------------
