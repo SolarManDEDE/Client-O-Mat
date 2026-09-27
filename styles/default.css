@@ -6,7 +6,7 @@ body {
 /*	font-size:10pt; */
 	color:#000000; 
 
-	background-color: #EFC04F;
+	background-color: #FFFFFF;
 	/* background-image: linear-gradient(#EFC04F, #FFE08F); */ 
 	/* background-attachment: fixed; */
 	}
@@ -49,18 +49,6 @@ a:hover { color:#FF0000; text-decoration:none; }
 	background-color: rgba(0, 0, 0, 0.05);
 }
 
-
-/* Social Media DIV und zugehoerige Buttons */
-/* Social media DIV and corresponding buttons */
-.social-facebook {
-    background: #4560a3;
-	color: #c0c0c0;
-}
-
-.social-twitter {
-   background: #68ace3;
-	color: #fff;
-}
 
 .social-mail {
 	background: #c6c6c6;
