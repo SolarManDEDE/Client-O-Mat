@@ -455,11 +455,11 @@ function fnEvaluationByThesis(arResults)
 					tableContent += "</td>";
 
 					tableContent += "<th class='align-text-top'>";
-					tableContent += TEXT_ANSWER_USER+" &amp; "+TEXT_POSITION_PARTY
+					tableContent += TEXT_USER_QUALIFICATION_HEADER
 					tableContent += "</th>";
 
 					tableContent += "<th class='align-text-top'>";	
-					tableContent += TEXT_QUESTION+" &amp; "+TEXT_ANSWER_PARTY
+					tableContent += TEXT_QUESTION_ANSWER_HEADER
 					tableContent += "</th>";
 
 				
@@ -473,13 +473,13 @@ function fnEvaluationByThesis(arResults)
 			tableContent += "<div class='row border ' role='row'>"; // row header
 				tableContent += "<div class='col col-2' role='columnheader'>";
 				tableContent += "<strong>";
-				tableContent += TEXT_ANSWER_USER+" &amp; "+TEXT_POSITION_PARTY
+				tableContent += TEXT_USER_QUALIFICATION_HEADER
 				tableContent += "</strong>";
 				tableContent += "</div>";
 
 				tableContent += "<div class='col col-10' role='columnheader'>";
 				tableContent += "<strong>";					
-				tableContent += TEXT_QUESTION+" &amp; "+TEXT_ANSWER_PARTY
+				tableContent += TEXT_QUESTION_ANSWER_HEADER
 				tableContent += "</strong>";
 				tableContent += "</div>";				
 			tableContent += "</div>"; // row header						
