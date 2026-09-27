@@ -302,14 +302,7 @@ function fnJumpToQuestionNumber(questionNumber)
 		// neue Zeile
 		if (modulo == 1) { tableContent += "<tr>"; }
 		tableContent += "<td align='center' id='jumpToQuestionNr"+i+"' title='"+arQuestionsShort[(i-1)]+" - "+arQuestionsLong[(i-1)]+"' class='"+jumpToQuestionClass+"'>";
-		if (i - 1 <= questionNumber || arPersonalPositions[i - 1] < 99)
-		{
-			tableContent += "<a href='javascript:fnShowQuestionNumber("+(i-2)+")' style='display:block;'>"+i+" </a>";
-		}
-		else
-		{
-			tableContent += i;
-		}
+		tableContent += "<a href='javascript:fnShowQuestionNumber("+(i-2)+")' style='display:block;'>"+i+" </a>";
 		tableContent += "</td>";
 		if (modulo == 0) { tableContent += "</tr>"; }
 	}
