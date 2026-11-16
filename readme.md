@@ -20,6 +20,8 @@ https://www.mat-o-wahl.de/ -> Ausprobieren (DE) :de:
 
 3. `Fragen- und Antworten-CSV`-Datei in einem **Texteditor oder einer Tabellenkalkulation (MS Excel, LO Calc, ...) bearbeiten**. Der Dateiname kann frei gewählt werden.
 
+   Alternativ kannst du die Dateien im Browser unter `editor.html` bearbeiten. Lade die exportierten CSV-Dateien herunter und ersetze damit die Dateien im Ordner `/DATA`. Wenn du die Anzahl der Fragen oder Parteien änderst, passe auch `intQuestions` beziehungsweise `intParties` in `/DATA/DEFINITION.JS` an.
+
 4. **Testen mit `INDEX.HTML`** oder `QUICKTEST.HTML` 
    (am besten auf http://localhost/ oder im privaten Webspace) 
 
@@ -71,6 +73,9 @@ https://www.mat-o-wahl.de/ -> Try It (EN) :gb: :us:
 2. **Edit** `/DATA/DEFINITION.JS` with a text-editor (best use one with syntax-highlighting).
 
 3. **Edit** `CSV-text file` for questions and answers with a text-editor or spread-sheet-software (MS Excel. LO Calc, ...)
+
+   Alternatively, edit the files in the browser at `editor.html`. Download the exported CSV files and replace the files in `/DATA`. If you change the number of questions or parties, also update `intQuestions` or `intParties` in `/DATA/DEFINITION.JS`.
+
 
 4. **Test settings** using `INDEX.HTML` or `QUICKTEST.HTML`
    (works best on http://localhost/ or your private webspace)

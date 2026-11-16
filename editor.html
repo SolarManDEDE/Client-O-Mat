@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fragen und Endgeräte bearbeiten - Notebooknavigator</title>
+	<link rel="stylesheet" href="system/bootstrap4/css/bootstrap.min.css">
+	<style>
+		body { padding: 1.5rem 0 3rem; }
+		.editor-question, .editor-party { margin-bottom: 1.5rem; }
+		.editor-answer { border-top: 1px solid #dee2e6; padding-top: 1rem; margin-top: 1rem; }
+		.editor-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+		#editorStatus:empty { display: none; }
+	</style>
+	<script src="system/jquery3/jquery-3.4.1.min.js"></script>
+	<script src="system/jquery.csv-0.8.9.min.js"></script>
+	<script defer src="system/editor.js"></script>
+</head>
+<body>
+	<main class="container">
+		<header class="mb-4">
+			<h1>Fragen und Endgeräte bearbeiten</h1>
+			<p>Bearbeite den Fragebogen direkt im Browser. Änderungen werden nicht auf dem Server gespeichert. Lade die CSV-Dateien herunter und ersetze damit anschließend die Dateien im Ordner <code>data</code>.</p>
+			<p><a href="index.html">Zurück zum Notebooknavigator</a></p>
+		</header>
+
+		<div id="editorStatus" class="alert" role="status" aria-live="polite"></div>
+		<div id="editorValidation" class="alert alert-warning" role="alert" hidden></div>
+		<div class="alert alert-warning" role="note">
+			<strong>Wichtig:</strong> Wenn du die Anzahl der Fragen änderst, musst du den neuen Wert auch in <code>data/definition.js</code> bei <code>intQuestions</code> eintragen.
+		</div>
+
+		<section class="card mb-4" aria-labelledby="fileHeading">
+			<div class="card-body">
+				<h2 id="fileHeading" class="h4">CSV-Dateien laden und speichern</h2>
+				<p>Das Trennzeichen ist Semikolon (<code>;</code>). Du kannst Dateien aus dem Projekt laden oder eigene CSV-Dateien auswählen. Wenn du die Anzahl der Fragen oder Endgeräte änderst, passe auch <code>intQuestions</code> beziehungsweise <code>intParties</code> in <code>data/definition.js</code> an. Bei einer geänderten Fragenzahl lade auch die dazu passende Parteien-CSV; Antworten werden nicht automatisch verschoben oder ergänzt.</p>
+				<div class="editor-actions">
+					<label class="btn btn-outline-primary mb-0">
+						Fragen-CSV laden
+						<input id="questionsFile" type="file" accept=".csv,text/csv" hidden>
+					</label>
+					<label class="btn btn-outline-primary mb-0">
+						Endgeräte-CSV laden
+						<input id="partiesFile" type="file" accept=".csv,text/csv" hidden>
+					</label>
+					<button id="downloadQuestions" class="btn btn-primary" type="button">Fragen.csv herunterladen</button>
+					<button id="downloadParties" class="btn btn-primary" type="button">Parteien.csv herunterladen</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="card mb-4" aria-labelledby="questionsHeading">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+					<h2 id="questionsHeading" class="h4 mb-2">Fragen <span id="questionCount" class="text-muted"></span></h2>
+					<button id="addQuestion" class="btn btn-outline-success mb-2" type="button">Frage hinzufügen</button>
+				</div>
+				<div id="questionsList"></div>
+			</div>
+		</section>
+
+		<section class="card" aria-labelledby="partiesHeading">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+					<h2 id="partiesHeading" class="h4 mb-2">Endgeräte <span id="partyCount" class="text-muted"></span></h2>
+					<button id="addParty" class="btn btn-outline-success mb-2" type="button">Endgerät hinzufügen</button>
+				</div>
+				<div id="partiesList"></div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

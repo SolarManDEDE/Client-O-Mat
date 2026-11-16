@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <title>Client-O-Mat</title>
+  <title>Notebooknavigator</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="keywords" content="Client-O-Mat, Demokratie, Wahlen, elections, vote, Wahlbeteiligung, Fragebogen, Antworten, Positionen, Entscheidung, Hilfe, Politik, Vereine, e.V., Mitwirkung, B&uuml;rgermeister, Stadtrat, Kommunalwahl, Fachschaftsrat, Studentenrat, StuRa, Studentenparlament, Studierendenparlament, StuPa, AStA, Kreisrat, Landrat, Volksabstimmung, Plebiszit, Klon, clone, Alternative, GPL, Open Source, JavaScript, Freeware, kostenlos"/>
+  <meta name="keywords" content="Notebooknavigator, Demokratie, Wahlen, elections, vote, Wahlbeteiligung, Fragebogen, Antworten, Positionen, Entscheidung, Hilfe, Politik, Vereine, e.V., Mitwirkung, B&uuml;rgermeister, Stadtrat, Kommunalwahl, Fachschaftsrat, Studentenrat, StuRa, Studentenparlament, Studierendenparlament, StuPa, AStA, Kreisrat, Landrat, Volksabstimmung, Plebiszit, Klon, clone, Alternative, GPL, Open Source, JavaScript, Freeware, kostenlos"/>
   <meta name="robots" content="index, follow" />
   <meta name="language" content="de" />
   <meta name="Content-Language" content="de" />
 
   <meta name="author" content="Mathias Steudtner" />
-  <meta name="description" content="Client-O-Mat" />
+  <meta name="description" content="Notebooknavigator" />
   
 	<!-- BOOTSTRAP + JQUERY --- START -->
 
@@ -36,10 +36,10 @@
 	<!-- BOOTSTRAP + JQUERY --- END -->
 
 
-	<!-- Client-O-Mat EINSTELLUNGEN / SETTINGS (Javascript) -->
+	<!-- Notebooknavigator EINSTELLUNGEN / SETTINGS (Javascript) -->
 	<script type="text/javascript" src="data/definition.js"></script>
 
-	<!-- Client-O-Mat JAVASCRIPT - immer / always -->
+	<!-- Notebooknavigator JAVASCRIPT - immer / always -->
 	<script type="text/javascript" src="system/jquery.csv-0.8.9.min.js"></script>
 	<script type="text/javascript" src="system/general.js"></script>
 	<script type="text/javascript" src="system/output.js"></script>
@@ -48,17 +48,17 @@
 	<!-- Erweiterte Einstellungen auf Basis DEFINITION.JS - dynamisch eingebunden 
 		  Advanced Settings based on DEFINITION.JS - dynamically included -->	
 	<script>
-	// Client-O-Mat CSS Styles
+	// Notebooknavigator CSS Styles
 	for (i = 0; i<= design.length-1; i++) {
 		document.writeln("<link rel='stylesheet' type='text/css' href='styles/"+design[i]+"' />");	
 	}	
 
-	// Client-O-Mat Extras / Add-ons
+	// Notebooknavigator Extras / Add-ons
 	for (i = 0; i<= addons.length-1; i++) {
 		document.writeln(' <script type="text/javascript" src="'+addons[i]+'"><\/script> ');	
 	}	
 
-	// Client-O-Mat Sprache / Language / i18n
+	// Notebooknavigator Sprache / Language / i18n
 	document.writeln("<script type='text/javascript' src='i18n/i18n_"+language+".js'><\/script>");
 	// $.getScript( "i18n/i18n_"+language+".js", function( data, textStatus, jqxhr ){ }) 
 	// -> wäre eleganter aber lädt zu langsam / unzuverlässig
