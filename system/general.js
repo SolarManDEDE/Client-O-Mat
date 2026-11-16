@@ -12,7 +12,6 @@ var arQuestionsLong = new Array();		// Langform der Frage: Soll der Flughafen au
 var arPartyPositions = new Array();	// Vorzeichen bestimmt die Position, der Betrag den Punktewert
 var arPartyOpinions = new Array();		// Begründung der Parteien aus den CSV-Dateien
 var arPersonalPositions = new Array();	// eigene Position als Zahl (1/0/-1)
-var arVotingDouble = new Array();	// eigene Position als Zahl (2/1/0/-1/-2)
 
 // var arPartyFiles = new Array();		// Liste mit den Dateinamen der Parteipositionen
 var arPartyNamesShort = new Array();	// Namen der Parteien - kurz
@@ -129,7 +128,7 @@ function fnEvaluation()
 			positionsMatch += fnGetPointsForAnswer(
 				arPersonalPositions[modulo],
 				arPartyPositions[i],
-				arVotingDouble[modulo] ? 2 : 1
+				1
 			);
 			arResults[indexPartyInArray] = positionsMatch;
 		} // end: Frage nicht uebersprungen
@@ -215,7 +214,7 @@ function fnGetMaxPointsForPositionArray(positions, votingDouble)
 
 function fnGetMaxPointsForAnswers()
 {
-	return fnGetMaxPointsForPositionArray(arPersonalPositions, arVotingDouble) || 1;
+	return fnGetMaxPointsForPositionArray(arPersonalPositions) || 1;
 }
 
 
@@ -223,19 +222,8 @@ function fnGetMaxPointsForAnswers()
 // Aufruf aus fnEvaluation()
 function fnSendResults(arResults, arPersonalPositions)
 {
-	// Korrektur der Parteiposition (-1,0,1) mit den Informationen aus der doppelten Wertung (-2,-1,0,1,2)
-	// Marius Nisslmueller, Bad Honnef, Juni 2020
-	arPersonalPositionsForStats = arPersonalPositions.slice(); // Damit arPersonalPositions nicht verändert wird
-	for(let i=0; i<arPersonalPositionsForStats.length; i++){
-		if(arVotingDouble[i] && arPersonalPositionsForStats[i] < 99){
-		    arPersonalPositionsForStats[i] *= 2; 
-		}
-	}
-
-
 	var strResults = arResults.join(",");
-	// var strPersonalPositions = arPersonalPositions.join(",");
-	var strPersonalPositions = arPersonalPositionsForStats.join(",");
+	var strPersonalPositions = arPersonalPositions.join(",");
 	
 	$.get(statsServer, { mowpersonal: strPersonalPositions, mowparties: strResults } );
 
@@ -394,7 +382,11 @@ function fnTransformPositionToIcon(position)
 
 // Gibt die entsprechenden css-Klassen für Partei-Position (-1, 0, 1) und default zurück.
 function fnGetJumpToQuestionColorForPosition(position) {
-    position = fnGetPositionDirection(Number(position));
+    var numericPosition = Number(position);
+    if (!isFinite(numericPosition) || numericPosition >= 99) {
+        return "td-jump-to-question-skip";
+    }
+    position = fnGetPositionDirection(numericPosition);
     switch (position) {
         case -1:
             return "bg-danger td-jump-to-question-decline";
@@ -472,27 +464,6 @@ function fnToggleSelfPosition(i)
 
 	fnReEvaluate();
 }
-
-// 02/2015 BenKob (doppelte Wertung)
-function fnToggleDouble(i)
-{
-	arVotingDouble[i]=!arVotingDouble[i];
-	if(arVotingDouble[i])
-	{
-		// $("#doubleIcon"+i).attr("src","img/double-yes_icon.png");
-		$("#doubleIcon"+i).removeClass("btn-outline-dark").addClass("btn-dark");
-		$("#doubleIcon"+i).attr("title",TEXT_ANSWER_DOUBLE);
-	}
-	else
-	{
-		// $("#doubleIcon"+i).attr("src","img/double-no_icon.png");
-		$("#doubleIcon"+i).removeClass("btn-dark").addClass("btn-outline-dark");
-		$("#doubleIcon"+i).attr("title",TEXT_ANSWER_NORMAL);
-	}
-	fnReEvaluate();
-}
-
-
 
 // vanilla JavaScript FadeIn / FadeOut
 // Modus = display: "none / block" ändern (0 = nein, 1 = ja)

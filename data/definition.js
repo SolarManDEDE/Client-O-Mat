@@ -102,6 +102,9 @@ var fileAnswers = "Parteien.csv";
 
 var intParties = 2;
 
+// Ergebnis-Punktzahlen anzeigen (1) oder ausblenden (0)?
+var showPoints = 0;
+
 
 /*
  	1.5. BILDGROESSE des PARTEILOGOS (am Ende)

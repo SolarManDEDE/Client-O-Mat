@@ -26,8 +26,6 @@ function fnStart()
 	$("#votingPro").html(TEXT_VOTING_PRO)
 	$("#votingNeutral").html(TEXT_VOTING_NEUTRAL)
 	$("#votingContra").html(TEXT_VOTING_CONTRA)
-	$("#votingSkip").html(TEXT_VOTING_SKIP)
-	$("#votingDouble").html(TEXT_VOTING_DOUBLE)
 	
 	// 4. Navigation
 	$("#sectionNavigation").hide();
@@ -85,11 +83,8 @@ function fnStart()
 	// (b) Antworten der Parteien und Partei-Informationen
 	fnReadCsv("data/"+fileAnswers,fnReadPositions)
 
-	// arVotingDouble initialisieren
 	for (i=0;i<arQuestionsShort.length;i++)
-		{arVotingDouble[i]=false;
-		arPersonalPositions[i]=99;}
-	$("#votingDouble").attr('checked', false);
+		{arPersonalPositions[i]=99;}
 	
 	// Wenn "descriptionShowOnStart = 0" in DEFINITION.JS, dann gleich die Fragen anzeigen
 	if (descriptionShowOnStart) {
@@ -134,7 +129,6 @@ function fnShowQuestionNumber(questionNumber)
 	$("#votingPro").unbind("click");
 	$("#votingNeutral").unbind("click");
 	$("#votingContra").unbind("click");
-	$("#votingSkip").unbind("click");
 
 	// solange Fragen gestellt werden -> Anzeigen (sonst Auswertung)
 	if (questionNumber < arQuestionsLong.length) 
@@ -181,16 +175,6 @@ function fnShowQuestionNumber(questionNumber)
 		   	fnShowQuestionNumber(questionNumber);
 		   });
 	
-		   $("#votingSkip").click(function () { 
-		   	arPersonalPositions[questionNumber] = 99;
-		   	fnShowQuestionNumber(questionNumber);
-		   });
-
-			// Checkbox für doppelte Bewertung 
-		  	$("#votingDouble").attr('checked', arVotingDouble[questionNumber]);
-			// und Bild/Button zuruecksetzen
-			$("#votingDouble").removeClass( "btn-dark" ).addClass( "btn-outline-dark" );
-
 		$("#sectionNavigation").fadeIn(300);
 
 	
@@ -240,28 +224,6 @@ function fnShowQuestionNumber(questionNumber)
 	
 }
 
-// 02/2015 BenKob
-function fnChangeVotingDouble()
-{
-
-	arVotingDouble[activeQuestion]=!(arVotingDouble[activeQuestion]);
-	strBtnSrc = $("#votingDouble").hasClass("btn-outline-dark");
-	
-	if (strBtnSrc)
-	// wenn vorher unwichtig -> jetzt doppelt werten
-	{
-		$("#votingDouble").removeClass( "btn-outline-dark" ).addClass( "btn-dark" );
-		$("#jumpToQuestionNr"+(activeQuestion+1)+"").css("font-weight","bold");
-	}
-	// wenn vorher wichtig -> jetzt wieder auf normal setzen
-	else
-	{
-		$("#votingDouble").removeClass( "btn-dark" ).addClass( "btn-outline-dark" );
-		$("#jumpToQuestionNr"+(activeQuestion+1)+"").css("font-weight","normal");
-	}
-
-}
-
 // Springe zu Frage Nummer XY (wird in fnShowQuestionNumber() aufgerufen)
 function fnJumpToQuestionNumber(questionNumber)
 {
@@ -297,8 +259,6 @@ function fnJumpToQuestionNumber(questionNumber)
 	for (i = 1; i <= arQuestionsLong.length; i++)
 	{
 		let jumpToQuestionClass = i-1 === questionNumber ? "td-jump-to-question-current" : fnGetJumpToQuestionColorForPosition(arPersonalPositions[(i-1)]);
-		const votingDoubleClass = arVotingDouble[(i-1)] ? " td-jump-to-question-voting-double" : "";
-		jumpToQuestionClass = jumpToQuestionClass  + votingDoubleClass;
 		var modulo = i % questionsPerLine;
 		// neue Zeile
 		if (modulo == 1) { tableContent += "<tr>"; }
@@ -498,8 +458,7 @@ function fnEvaluationByThesis(arResults)
 				// tableContent += "<tr>";
 				tableContent += "<div class='row border' role='row'>";
 				
-					// 1. Spalte: doppelte Wertung
-					// tableContent += "<th class='text-center'>";
+					// 1. Spalte: eigene Meinung
 					tableContent += "<div class='col col-2' role='cell'>";
 
 						tableContent += "<button type='button' id='' "+
@@ -508,21 +467,6 @@ function fnEvaluationByThesis(arResults)
 							" onclick='fnToggleSelfPosition("+i+")' "+ 
 							" alt='"+TEXT_ANSWER_USER+" : "+positionText+"' title='"+TEXT_ANSWER_USER+" : "+positionText+"'>"+
 							" "+positionIcon+"</button>";
-
-
-						if (arVotingDouble[i])
-						{
-							tableContent += "<button type='button' class='btn btn-dark btn-sm' "+
-								" id='doubleIcon"+i+"' "+
-								" onclick='fnToggleDouble("+i+")' title='"+TEXT_ANSWER_DOUBLE+"'>x2</button>";						
-						}
-						else			
-						{
-						tableContent += "<button type='button' class='btn btn-outline-dark btn-sm' "+
-								" id='doubleIcon"+i+"' "+
-								" onclick='fnToggleDouble("+i+")' title='"+TEXT_ANSWER_NORMAL+"'>x2</button>";
-		
-						}		
 					// tableContent += "</th>";
 //					tableContent += "</div>";
 
@@ -887,7 +831,7 @@ function fnEvaluationByParty(arResults)
 // Aktualisierung der Ergebnisse in der oberen Ergebnistabelle (short)
 // Aufruf heraus in:
 // (a) fnEvaluationShort() nach dem Aufbau der oberen Tabelle 
-// (b) in den Buttons in der detaillierten Auswertung (fnToggleSelfPosition() und fnToggleDouble())
+// (b) in den Buttons in der detaillierten Auswertung (fnToggleSelfPosition())
 function fnReEvaluate()
 {
 	//Ergebniss neu auswerten und Anzeige aktualisieren
@@ -906,7 +850,14 @@ function fnReEvaluate()
 		// neu ab v.0.3 - Bootstrap-Progressbar
 		$("#partyBar"+i).width(percent+"%")
 		$("#partyBar"+i).attr("aria-valuenow", percent).text(percent+"%");
-		$("#partyScore"+i).text(arResults[i]+" / "+maxPoints+" Punkte");
+		if (showPoints)
+		{
+			$("#partyScore"+i).text(arResults[i]+" / "+maxPoints+" Punkte");
+		}
+		else
+		{
+			$("#partyScore"+i).empty();
+		}
 		$("#partyBar"+i).removeClass("bg-success bg-warning bg-danger").addClass(barImage);
 
 		$("#partyPoints"+i).html(arResults[i]+"/"+maxPoints);

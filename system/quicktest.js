@@ -79,6 +79,7 @@ function fnTestShowAll()
 		"intQuestions",
 		"fileAnswers",
 		"intParties",
+		"showPoints",
 		"intPartyLogosImgWidth", 
 		"intPartyLogosImgHeight", 
 		"descriptionShowOnStart",
