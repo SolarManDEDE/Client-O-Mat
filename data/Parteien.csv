@@ -9,6 +9,8 @@
 "-1";"MacBooks verfügen über keinen Touchscreen und unterstützen keine Stifteingabe."
 "-1";"Einige MacBook-Basismodelle unterstützen nativ nur einen externen Monitor."
 "-1";"MacBooks setzen fast ausschließlich auf Thunderbolt/USB-C; Adapter sind unterwegs oft nötig."
+"100";"Ein MacBook ist dank seiner Akkulaufzeit und leichten Bauweise besonders mobil."
+"100";"Das Apple-Ökosystem mit iPhone, iPad und Mac sorgt für eine sehr konsistente Nutzererfahrung."
 
 "Partei_kurz:";"Windows"
 "Partei_lang:";"Windows Laptop"
@@ -21,3 +23,5 @@
 "1";"Windows unterstützt Convertibles und Laptops mit Touchscreen sowie aktiver Stifteingabe."
 "1";"Windows unterstützt Multi-Monitor-Setups flexibel über verschiedene Docks."
 "1";"Viele Windows-Laptops bieten weiterhin klassische USB-A-, HDMI- und LAN-Anschlüsse direkt am Gehäuse."
+"-1";"Für reine Mobilität ist Windows oft weniger überzeugend als ein MacBook."
+"-1";"Wenn ich das Apple-Ökosystem nutze, empfinde ich Windows als weniger konsistent."
