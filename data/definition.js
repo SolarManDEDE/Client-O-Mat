@@ -69,7 +69,7 @@ var fileQuestions = "Fragen.csv";
 
 //	1.2 ANZAHL der FRAGEN / 1.2 NUMBER of QUESTIONS
 
-var intQuestions = 6;
+var intQuestions = 8;
 
 // 	--------------------------------------------------------------------
 

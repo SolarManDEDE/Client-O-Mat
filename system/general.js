@@ -256,85 +256,108 @@ function fnPercentage(value,max)
 function fnTransformCsvToArray(csvData,modus)
 {
 	// benutzt externe jquery-csv-Bibliothek
-	arZeilen = $.csv.toArrays(csvData, {separator: ""+separator+""});
-	
-//	console.log(arZeilen.length+ " Part "+intParties+" quest: "+intQuestions )
+	var arZeilen = $.csv.toArrays(csvData, {separator: ""+separator+""});
 
+	if (modus == 1)
+	{
+		arQuestionsShort.length = 0;
+		arQuestionsLong.length = 0;
+	}
+	else
+	{
+		arPartyNamesShort.length = 0;
+		arPartyNamesLong.length = 0;
+		arPartyDescription.length = 0;
+		arPartyInternet.length = 0;
+		arPartyLogosImg.length = 0;
+		arPartyPositions.length = 0;
+		arPartyOpinions.length = 0;
+	}
 
 	// Number of lines per party for MODULO-Operation on the ANSWERS-file
 	// There are five (5) lines with information on the party + "intQuestions" lines + an empty line
 	// Example "Obsthausen"/"Fruitville" = 5 + 6 + 1 = 12
 	// Example "Springfield" = 5 + 15 + 1 = 21
-	var numberOfLines = 6 + intQuestions 
+	var numberOfLines = 6 + intQuestions;
 
 	if (modus == 1) // Fragen / Questions
-	{ lastLine = intQuestions}
+	{ lastLine = intQuestions; }
 	else
-	{ lastLine = (5 + intQuestions + 1) * intParties -1} // Partien und Antworten / Parties and answers
+	{ lastLine = (5 + intQuestions + 1) * intParties -1; } // Partien und Antworten / Parties and answers
 
-
-//	for(i = 0; i <= arZeilen.length-1; i++)
 	for(i = 0; i <= lastLine-1; i++)
 	{
-		// console.log("i: "+i+" m: "+modus+" val0: "+arZeilen[i][0]+" val1: "+arZeilen[i][1] )	
-		valueOne = arZeilen[i][0];
-		valueTwo = arZeilen[i][1];
-		
-		// FRAGEN in globales Array schreiben (z.B. aus FRAGEN.CSV)
+		if (!arZeilen[i] || !Array.isArray(arZeilen[i]))
+		{
+			continue;
+		}
+
+		var valueOne = (typeof arZeilen[i][0] === "undefined") ? "" : String(arZeilen[i][0]).replace(/^\uFEFF/, "").trim();
+		var valueTwo = (typeof arZeilen[i][1] === "undefined") ? "" : String(arZeilen[i][1]).replace(/^\uFEFF/, "").trim();
+
 		if (modus == 1)
 		{
+			if (valueOne === "" && valueTwo === "")
+			{
+				continue;
+			}
 			arQuestionsShort.push(valueOne);
 			arQuestionsLong.push(valueTwo);
 		}
-		// ANTWORTEN und Meinungen in globales Array schreiben (z.B. aus PARTEIEN.CSV)
 		else
 		{
 			// v.0.5 NEU
 			// ALLE Partei-Informationen in einer CSV-Datei
 			modulo = i % numberOfLines;
 
-			if ( (modulo == 0) && (valueTwo != "undefined") )
+			if ( (modulo == 0) && (valueTwo !== "") )
 			{ 
 				// Parteinamen - kurz
-				arPartyNamesShort.push(valueTwo)
+				arPartyNamesShort.push(valueTwo);
 			}
-			else if ( (modulo == 1) && (valueTwo != "undefined") )
+			else if ( (modulo == 1) && (valueTwo !== "") )
 			{ 
 				// Parteinamen - lang
-				arPartyNamesLong.push(valueTwo)
+				arPartyNamesLong.push(valueTwo);
 			}
-			else if ( (modulo == 2) && (valueTwo != "undefined") )
+			else if ( (modulo == 2) && (valueTwo !== "") )
 			{ 
 				// Beschreibung der Partei (optional)
-				arPartyDescription.push(valueTwo)
-//				console.log("i: "+i+ " value: "+valueTwo)
+				arPartyDescription.push(valueTwo);
 			}
-			else if ( (modulo == 3) && (valueTwo != "undefined") )
+			else if ( (modulo == 3) && (valueTwo !== "") )
 			{ 
 				// Webseite der Partei
-				arPartyInternet.push(valueTwo)
+				arPartyInternet.push(valueTwo);
 			}
-			else if ( (modulo == 4) && (valueTwo != "undefined") )
+			else if ( (modulo == 4) && (valueTwo !== "") )
 			{ 
 				// Logo der Partei
-				arPartyLogosImg.push(valueTwo)
+				arPartyLogosImg.push(valueTwo);
 			}
 			else if ( (modulo > 4) && (modulo <= (intQuestions+4) ) )
 			{
 				// Positionen und Erklärungen
-				var partyAnswerText = String(valueOne).trim();
-				arPartyPositions.push(partyAnswerText == "" ? NaN : Number(partyAnswerText));
-				arPartyOpinions.push(valueTwo); // Erklärung zur Zahl
+				if (valueOne === "")
+				{
+					continue;
+				}
+				var partyAnswerValue = Number(valueOne);
+				if (!isFinite(partyAnswerValue))
+				{
+					continue;
+				}
+				arPartyPositions.push(partyAnswerValue);
+				arPartyOpinions.push(valueTwo);
 			}
 			else 
 			{
 				// nothing to do. Just empty lines in the CSV-file
 			}
-		}  // end: if-else modus == 1	
+		}  // end: if-else modus == 1
 	}  // end: for
 
 } // end: function
-
 // v.0.3 NEU
 // ersetzt die Position (-1, 0, 1) mit dem passenden Button
 function fnTransformPositionToButton(position)
