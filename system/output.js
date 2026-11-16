@@ -360,18 +360,9 @@ function fnEvaluationShort(arResults)
 					tableContent += "</a>)";
 
 					// Beschreibung der Partei - falls in der CSV vorhanden.
-					// Nur die ersten 32 Zeichen anzeigen. 
-					// Danach abschneiden und automatisch ein/ausblenden (Funktionsaufbau weiter unten)
-					// Wenn keine Beschreibung gewünscht, dann "0" eintragen.
-					intPartyDescriptionPreview = 32
-					if ( (arPartyDescription[partyNum]) && (intPartyDescriptionPreview > 0) )
+					if (arPartyDescription[partyNum])
 					{
-						tableContent += "<p style='cursor: pointer;'> &bull; "
-						tableContent += arPartyDescription[partyNum].substr(0,intPartyDescriptionPreview)
-						tableContent += "<span id='resultsShortPartyDescriptionDots"+partyNum+"'>...</span>"
-						tableContent += "<span id='resultsShortPartyDescription"+partyNum+"'>"
-						tableContent += arPartyDescription[partyNum].substr(intPartyDescriptionPreview,1024)
-						tableContent += "</span> </p>"
+						tableContent += "<p>&bull; " + arPartyDescription[partyNum] + "</p>";
 					}
 
 				tableContent += "</div>"
@@ -412,27 +403,6 @@ function fnEvaluationShort(arResults)
 	// -> enthält Aufruf für farbliche Progressbar (muss hier ja nicht extra wiederholt werden)
 	fnReEvaluate()
 	
-
-	// Click-Funktion auf PARTEINAME-Zeile legen zum Anzeigen des BESCHREIBUNG-SPAN (direkt darunter)
-	// "[In a FOR-loop] you can use the let keyword, which makes the i variable local to the loop instead of global"
-	// 	https://stackoverflow.com/questions/4091765/assign-click-handlers-in-for-loop
-	for (let i = 0; i <= (intParties-1); i++)
-	{
-		// Klickfunktion - bei Überschrift
-		$("#resultsShortParty"+i).click(function () { 
-				$("#resultsShortPartyDescription"+i).toggle(500);
-				$("#resultsShortPartyDescriptionDots"+i).toggle(500);
-			});	
-		// Klickfunktion - bei Beschreibung
-		/*
-		$("#resultsShortPartyDescription"+i).click(function () { 
-				$("#resultsShortPartyDescription"+i).toggle(500);
-			});
-		*/
-		// am Anfang ausblenden
-		$("#resultsShortPartyDescription"+i).fadeOut(500);
-		$("#resultsShortPartyDescriptionDots"+i).fadeIn(500);
-	}
 
 	// $("#results").fadeIn(500);
 	$("#sectionResults").fadeIn(500);
