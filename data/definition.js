@@ -156,8 +156,14 @@ var descriptionHeading2 = "Welches ist der richtige Client für mich";
 
 // 	1.6.4. Kurzer Text um was es bei der Wahl geht / 1.6.3. Short (descriptive) text on what's the election about
 
-var descriptionExplanation = "Welches ist der richtige Client für mich? Klicke Dich durch die <strong>Fragen</strong>, und erfahre das Ergebnis! <br /> Blindtext, Blindtext, Blindtext."; 
+var descriptionExplanation = "Klicke Dich durch die Fragen, und bestelle im Anschluss deinen neuen Client!!";
 
+
+// 	--------------------------------------------------------------------
+
+// Optionaler Hinweis oberhalb der Detail-Ergebnisse (Text und Internet-Link)
+var resultsInfoText = "Über den folgenden Link kommst du zur Bestellung deines neuen Laptops";
+var resultsInfoLink = "http://Link.auf.Bestellseite.html";
 
 // 	--------------------------------------------------------------------
 

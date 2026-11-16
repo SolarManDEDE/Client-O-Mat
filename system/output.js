@@ -34,6 +34,9 @@ function fnStart()
 	$("#sectionResults").hide()
 	$("#resultsHeading").empty();
 	$("#resultsShort").empty();
+	$("#resultsInfoBox").hide();
+	$("#resultsInfoText").empty();
+	$("#resultsInfoLink").empty().attr("href", "");
 	$("#resultsByThesis").empty();
 	$("#resultsByParty").empty();
 	$("#resultsAddonTop").empty();
@@ -200,6 +203,7 @@ function fnShowQuestionNumber(questionNumber)
 		fnEvaluationByThesis(arResults);	// Thesen + Partei-Antworten
 		fnEvaluationByParty(arResults) 	// Liste der Parteien mit ihren Antworten (ab v.0.6)
 
+		fnShowResultsInfo();
 
 		// Buttons einblenden für detaillierte Ergebnisse
 		$("#resultsButtons").fadeIn(500);
@@ -222,6 +226,45 @@ function fnShowQuestionNumber(questionNumber)
 		
 	} 
 	
+}
+
+function fnShowResultsInfo()
+{
+	var infoText = typeof resultsInfoText === "string" ? resultsInfoText.trim() : "";
+	var infoLink = typeof resultsInfoLink === "string" ? resultsInfoLink.trim() : "";
+
+	if (infoText)
+	{
+		$("#resultsInfoText").text(infoText).show();
+	}
+	else
+	{
+		$("#resultsInfoText").hide();
+	}
+
+	if (infoLink)
+	{
+		try
+		{
+			var parsedLink = new URL(infoLink);
+			if (parsedLink.protocol !== "http:" && parsedLink.protocol !== "https:")
+			{
+				throw new Error("Only HTTP and HTTPS links are allowed.");
+			}
+			$("#resultsInfoLink").attr("href", parsedLink.href).text("Hier klicken").show();
+		}
+		catch (error)
+		{
+			console.error("Ungültiger resultsInfoLink in data/definition.js. Bitte eine vollständige HTTP- oder HTTPS-Adresse angeben.", error);
+			$("#resultsInfoLink").empty().hide();
+		}
+	}
+	else
+	{
+		$("#resultsInfoLink").empty().hide();
+	}
+
+	$("#resultsInfoBox").toggle(Boolean(infoText || infoLink));
 }
 
 // Springe zu Frage Nummer XY (wird in fnShowQuestionNumber() aufgerufen)

@@ -86,6 +86,8 @@ function fnTestShowAll()
 		"descriptionHeading1",
 		"descriptionHeading2",
 		"descriptionExplanation",
+		"resultsInfoText",
+		"resultsInfoLink",
 		"privacyPolicyUrl",
 		"separator",
 		"design",
