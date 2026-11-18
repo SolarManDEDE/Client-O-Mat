@@ -19,6 +19,7 @@ var TEXT_RESTART = "[&#x21BB;] Fragebogen neu starten"
 
 // Results
 var TEXT_RESULTS_HEADING = "Übereinstimmung mit den Positionen"
+var TEXT_RESULTS_RECOMMENDATION = "Unsere Empfehlung für deinen neuen Laptop"
 
 var TEXT_RESULTS_INFO_THESES = "Du kannst deine Meinung in der zweiten Spalte noch einmal anpassen und das neue Ergebniss überprüfen. <br /> Die Anwort, aus Sicht von Windows oder Mac, erhältst du beim Klick auf das Plus-Zeichen."
 var TEXT_RESULTS_INFO_PARTIES = "Dies ist eine Übersicht der Geräte und ihrer Eignung für deinen Arbeitsplatz"

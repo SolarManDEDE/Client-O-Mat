@@ -26,6 +26,7 @@ function fnStart()
 	$("#votingPro").html(TEXT_VOTING_PRO)
 	$("#votingNeutral").html(TEXT_VOTING_NEUTRAL)
 	$("#votingContra").html(TEXT_VOTING_CONTRA)
+	$("#votingNeutral").parent().toggle(showNeutralButton === 1);
 	
 	// 4. Navigation
 	$("#sectionNavigation").hide();
@@ -168,10 +169,13 @@ function fnShowQuestionNumber(questionNumber)
 		   	fnShowQuestionNumber(questionNumber);
 		   });
 	
-		   $("#votingNeutral").click(function () { 
-		   	arPersonalPositions[questionNumber] = 0;
-		   	fnShowQuestionNumber(questionNumber);
-		   });
+			if (showNeutralButton === 1)
+			{
+				$("#votingNeutral").click(function () {
+					arPersonalPositions[questionNumber] = 0;
+					fnShowQuestionNumber(questionNumber);
+				});
+			}
 	
 		   $("#votingContra").click(function () { 
 		   	arPersonalPositions[questionNumber] = -1;
@@ -326,18 +330,23 @@ function fnEvaluationShort(arResults)
 	// $("#explanation").empty().hide();	
 	
 	// Anzeige der Ergebnisse
-	$("#resultsHeading").append("<h1>"+TEXT_RESULTS_HEADING+"</h1>").fadeIn(500);
+	var showBestMatchOnly = resultsShowBestMatchOnly === 1;
+	var resultsHeading = showBestMatchOnly ? TEXT_RESULTS_RECOMMENDATION : TEXT_RESULTS_HEADING;
+	$("#resultsHeading").append("<h1>"+resultsHeading+"</h1>").fadeIn(500);
 
 	var numberOfQuestions=arQuestionsShort.length;
 	// Anzahl der Maximalpunkte anhand der beantworteten, gewichteten Fragen ermitteln.
 	var maxPoints = fnGetMaxPointsForAnswers();
+	var displayResultPercentageBar = showResultPercentageBar === 1;
+	var partyInfoColumnClass = displayResultPercentageBar || showPoints ? "col-md-7" : "col-md-11";
 
 	var tableContent = ""
 	tableContent += "<div class='row' id='resultsShortTable' role='table'>"
 		tableContent += "<div class='col'>"
 //		tableContent = "<table id='resultsShortTable' class='table table-bordered table-striped table-hover' aria-role='presentation'>"
 
-		for (i = 0; i <= (intParties-1); i++)
+		var numberOfPartiesToShow = showBestMatchOnly ? Math.min(1, intParties) : intParties;
+		for (i = 0; i < numberOfPartiesToShow; i++)
 		{
 			var partyNum=arSortParties[i];
 			var percent = fnPercentage(arResults[partyNum],maxPoints)
@@ -346,7 +355,7 @@ function fnEvaluationShort(arResults)
 			// tableContent += "<tr id='resultsShortParty"+partyNum+"'>"
 
 				// Parteinamen: lang, kurz, Webseite, Beschreibung
-				tableContent += "<div class='col col-10 col-md-7' role='cell'>"
+				tableContent += "<div class='col col-10 "+partyInfoColumnClass+"' role='cell'>"
 				// tableContent += "<td style='width:60%;'>"
 
 //					tableContent += "<img src='"+arPartyLogosImg[partyNum]+"' class='rounded img-fluid float-right' alt='Logo "+arPartyNamesLong[partyNum]+"' style='margin-left: 10px; width:"+intPartyLogosImgWidth+"; height:"+intPartyLogosImgHeight+";' />"
@@ -375,15 +384,21 @@ function fnEvaluationShort(arResults)
 				// tableContent += "</td>"
 				tableContent += "</div>"				
 
-				// Prozentwertung
-				tableContent += "<div class='col col-12 col-md-4' role='cell'>"
-				// tableContent += "<td style='width:40%;'>"
-					tableContent += "<div class='progress'>"
-					tableContent += "	<div class='progress-bar' role='progressbar' id='partyBar"+partyNum+"' style='width:"+percent+"%;' aria-valuenow='"+percent+"' aria-valuemin='0' aria-valuemax='100'></div> "
+				if (displayResultPercentageBar || showPoints)
+				{
+					tableContent += "<div class='col col-12 col-md-4' role='cell'>"
+					if (displayResultPercentageBar)
+					{
+						tableContent += "<div class='progress'>"
+						tableContent += "	<div class='progress-bar' role='progressbar' id='partyBar"+partyNum+"' style='width:"+percent+"%;' aria-valuenow='"+percent+"' aria-valuemin='0' aria-valuemax='100'></div> "
+						tableContent += "</div>"
+					}
+					if (showPoints)
+					{
+						tableContent += "<span class='small' id='partyScore"+partyNum+"'></span>"
+					}
 					tableContent += "</div>"
-					tableContent += "<span class='small' id='partyScore"+partyNum+"'></span>"
-				tableContent += "</div>"
-				// tableContent += "</td>"
+				}
 
 			tableContent += "</div>" // end: row (for-i)
 			// tableContent += "</tr>" 

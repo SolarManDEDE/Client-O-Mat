@@ -105,6 +105,15 @@ var intParties = 2;
 // Ergebnis-Punktzahlen anzeigen (1) oder ausblenden (0)?
 var showPoints = 0;
 
+// In der Ergebnisübersicht nur das beste Modell anzeigen (1) oder alle Modelle (0)?
+var resultsShowBestMatchOnly = 1;
+
+// Prozentbalken in der Ergebnisübersicht anzeigen (1) oder ausblenden (0)?
+var showResultPercentageBar = 0;
+
+// Schaltfläche "Egal/Weiß nicht" anzeigen (1) oder ausblenden (0)?
+var showNeutralButton = 0;
+
 
 /*
  	1.5. BILDGROESSE des PARTEILOGOS (am Ende)
